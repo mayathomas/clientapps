@@ -5,9 +5,16 @@ authors = ["maya <770257551@qq.com>"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[dev-dependencies]
+tokio = { version = "1.44.0", features = ["rt", "rt-multi-thread", "macros"] }
 
 [dependencies]
+anyhow = "1.0.97"
+chrono = { version = "0.4.40", features = ["serde"] }
 dioxus = { version = "0.6.0", features = ["router"] }
+futures = "0.3.31"
+reqwest = { version = "0.12.12", default-features = false, features = ["rustls-tls", "json"] }
+serde = { version = "1.0.218", features = ["derive"] }
 
 [features]
 default = ["web"]
