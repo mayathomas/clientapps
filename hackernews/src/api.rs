@@ -54,7 +54,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn get_comment_by_id_should_work(){
+    async fn get_comment_by_id_should_work() {
         let story = get_top_stories(1).await.unwrap().pop().unwrap();
         let id = story.kids[0];
         let comment = get_comment_by_id(id).await.unwrap();
