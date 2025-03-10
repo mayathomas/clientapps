@@ -1,16 +1,24 @@
-mod story_comments;
-mod story_item;
+mod comments;
+mod stories;
 use dioxus::prelude::*;
-use story_item::StoryItem;
+use comments::Comments;
+use stories::Stories;
 
-use crate::api::get_top_stories;
+use crate::StoryData;
 
 const FAVICON: Asset = asset!("/assets/favicon.ico");
 const TAILWIND_CSS: Asset = asset!("/assets/tailwind.css");
 
+#[derive(Debug, Clone)]
+pub enum CommentsState {
+    Unset,
+    Loading,
+    Loaded(StoryData),
+}
 
 #[component]
 pub fn App() -> Element {
+    use_context_provider(|| Signal::new(CommentsState::Unset));
     rsx! {
         document::Link{rel:"icon", href: FAVICON},
         document::Link{rel:"stylesheet", href: TAILWIND_CSS},
@@ -20,35 +28,10 @@ pub fn App() -> Element {
         }
         section { class: "flex flex-col w-8/12 px-4 bg-white rounded-r-3xl",
             section {
-                ul {}
+                Comments{}
             }
         }
     }
     }
 }
 
-#[component]
-fn Stories() -> Element {
-    let stories = use_resource(async move || get_top_stories(10).await);
-    match &*stories.read_unchecked() {
-        Some(Ok(stories)) => rsx! {
-            ul {
-                for story in stories {
-                    StoryItem{story:story.clone()}
-                }
-            }
-        },
-        Some(Err(err)) => rsx! {
-            div {
-                class: "mt-6 text-red-500",
-                p{"Failed to fetch stories"}
-                p {"{err}"}
-            }
-        },
-        None => rsx! {
-            div{ class:"mt-6",
-                p{"Loading stories..."}
-            }
-        },
-    }
-}
