@@ -1,5 +1,5 @@
 [workspace]
-members = ["hackernews"]
+members = ["hackernews","src-tauri"]
 # 引入多版本解析策略
 resolver = "2"
 
@@ -14,3 +14,4 @@ inherits = "dev"
 
 [profile.android-dev]
 inherits = "dev"
+
